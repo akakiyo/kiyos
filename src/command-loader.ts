@@ -4,7 +4,7 @@ import * as path from "path";
 export class CommandLoader {
   static load(): void {
     new GlobSync(
-      path.join(__dirname, "entrypoints", "**", "*.ts")
+      path.join(__dirname, "entrypoints", "**", "*.*")
     ).found.forEach((file: string) => {
       const collection: { [key: string]: Function } = require(file);
       Object.keys(collection).forEach((key) => {
