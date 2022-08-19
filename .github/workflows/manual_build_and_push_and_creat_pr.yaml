@@ -1,0 +1,69 @@
+name: manual build and push and create pr
+
+on:
+  workflow_dispatch:
+    inputs:
+      ragetEnv:
+        type: choice
+        description: デプロイする環境
+        options:
+        - staging
+        - production
+
+env:
+  AWS_ACCOUNT_ID: #AWSのアカウントID
+  AWS_REGION:  #AWSのリージョン
+  ECR_REPOSITORY: #ECRのレポジトリ
+  K8S_MANIFESTS_REPO: akakiyo/k8s-kiyos-manifests
+  DOCKER_FILE_PAT: Dockerfile
+  TAGET_ENV: ${{inputs.targetEnv}}
+
+jobs:
+  build_and_push:
+    name: docker build and push
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout target branch
+        uses: actions/checkout@v3
+      - name: checkout actions repo
+        uses: actions/checkout@v3
+        with:
+          repository: akakiyo/ki-github-actions-for-k8s
+          ref: main
+          token: ${{ secrets.AKAKIYODEV_PAT}}
+          path: ./.github/actions/ki-github-actions-for-k8s
+      - name: build and push
+        id: build-and-push
+        uses: ./.github/actions/ki-github-actions-for-k8s/image_build/v1
+        with:
+          aws-account-id: ${{ env.AWS_ACCOUNT_ID }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+          ecr-repository-name: ${{ env.ECR_REPOSITORY }}
+          github-personal-access-token: ${{ secrets.AKAKIYO_PAT }}
+          dockerfile-path: ${{ env.DOCKER_FILE_PATH }}
+      - name: create pullrequest
+        id: create-pullrequest
+        uses: ./.github/actions/ki-github-actions-for-k8s/pullrequest_manifest/v1
+        with:
+          k8s-manifest-repository-name: ${{ env.K8S_MANIFESTS_REPO }}
+          container-image-name: ${{ env.ECR_REPOSITORY }}
+          container-image-tag: ${{ steps.build-and-push.outputs.image-tag }}
+          overlays-path: "overlays/${{ env.TARGET_ENV }}"
+          github-personal-access-token: ${{ secrets.AKAKIYO_PAT }}
+      # - name: send notification to slack on success
+      #   if: success()
+      #   uses: ./.github/actions/ki-github-actions-for-k8s/notify_pullrequest_url/v1
+      #   with:
+      #     slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+      #     slack-channel-name: "#deploy_${{ env.TARGET_ENV }}"
+      #     environment-name: ${{ env.TARGET_ENV }}
+      #     target-repository-name: ${{ env.K8S_MANIFESTS_REPO }}
+      #     pullrequest-url: ${{ steps.create-pullrequest.outputs.pullrequest-url }}
+      # - name: send notification to slack on failure
+      #   if: failure()
+      #   uses: ./.github/actions/ki-github-actions-for-k8s/notify_failure_the_creation_of_pullreuest/v1
+      #   with:
+      #     slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+      #     slack-channel-name: "#deploy_${{ env.TARGET_ENV }}"
