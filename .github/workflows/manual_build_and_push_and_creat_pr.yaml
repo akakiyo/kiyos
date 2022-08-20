@@ -51,7 +51,7 @@ jobs:
           container-image-name: ${{ env.ECR_REPOSITORY }}
           container-image-tag: ${{ steps.build-and-push.outputs.image-tag }}
           overlays-path: "overlays/${{ env.TARGET_ENV }}"
-          github-personal-access-token: ${{ secrets.AKAKIYO_PAT }}
+          github-personal-access-token: ${{ secrets.AKAKIYODEV_PAT }}
       # - name: send notification to slack on success
       #   if: success()
       #   uses: ./.github/actions/ki-github-actions-for-k8s/notify_pullrequest_url/v1
