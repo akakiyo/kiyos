@@ -7,13 +7,13 @@ on:
         type: choice
         description: デプロイする環境
         options:
-        - staging
-        - production
+          - staging
+          - production
 
 env:
-  AWS_ACCOUNT_ID: #AWSのアカウントID
-  AWS_REGION:  #AWSのリージョン
-  ECR_REPOSITORY: #ECRのレポジトリ
+  AWS_ACCOUNT_ID: 647974632916
+  AWS_REGION: ap-northeast-1
+  ECR_REPOSITORY: kiyos
   K8S_MANIFESTS_REPO: akakiyo/k8s-kiyos-manifests
   DOCKER_FILE_PAT: Dockerfile
   TAGET_ENV: ${{inputs.targetEnv}}
