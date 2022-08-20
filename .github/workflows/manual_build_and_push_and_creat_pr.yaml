@@ -41,7 +41,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
           ecr-repository-name: ${{ env.ECR_REPOSITORY }}
-          github-personal-access-token: ${{ secrets.AKAKIYO_PAT }}
+          github-personal-access-token: ${{ secrets.AKAKIYODEV_PAT }}
           dockerfile-path: ${{ env.DOCKER_FILE_PATH }}
       - name: create pullrequest
         id: create-pullrequest
