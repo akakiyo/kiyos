@@ -3,7 +3,7 @@ name: manual build and push and create pr
 on:
   workflow_dispatch:
     inputs:
-      ragetEnv:
+      targetEnv:
         type: choice
         description: デプロイする環境
         options:
