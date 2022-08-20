@@ -1,3 +1,4 @@
 /node_modules
 .env
-/src/config/ki-production-firebase-adminsdk-a1o49-d7c6d4f359.json
+/src/config/gcp-firebase-serviceaccount.json
+/ki-kiyos-credential
