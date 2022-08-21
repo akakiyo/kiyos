@@ -1,4 +1,3 @@
 /node_modules
 .env
-/src/config/gcp-firebase-serviceaccount.json
 /ki-kiyos-credential
