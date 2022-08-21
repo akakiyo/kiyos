@@ -16,7 +16,7 @@ env:
   ECR_REPOSITORY: kiyos
   K8S_MANIFESTS_REPO: akakiyo/k8s-kiyos-manifests
   DOCKER_FILE_PAT: Dockerfile
-  TAGET_ENV: ${{inputs.targetEnv}}
+  TARGET_ENV: ${{inputs.targetEnv}}
 
 jobs:
   build_and_push:
