@@ -1,6 +1,7 @@
 init: ## credentialを読み込みます
 		rm -r -f ki-kiyos-credential
 		git clone git@gitlab.com:akakiyo/ki-kiyos-credential.git
+		git update-index --skip-worktree src/config/gcp-firebase-serviceaccount.json
 		cp ./ki-kiyos-credential/files/gcp/staging/gcp-firebase-serviceaccount.json ./src/config/gcp-firebase-serviceaccount.json
 
 start: ## kiyosを起動します(Dockerイメージの生成とコンテナの立ち上げ)
